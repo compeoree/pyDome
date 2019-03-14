@@ -59,7 +59,7 @@ class GeodesicSphere():
         distance_vector = self.unprojected_vertices[i] - self.unprojected_vertices[j]
         length = (distance_vector[0] ** 2 + distance_vector[1] ** 2 + distance_vector[2] ** 2) ** 0.5
 
-        if not replace_dict.has_key(i+1):
+        if i+1 not in replace_dict:
           replace_dict[i+1] = []
 
         if length < self.vertex_proximity_threshold:

@@ -24,7 +24,7 @@ def get_bill_of_materials(V, C, rounding_precision):
     v2 = V[c[1] - 1]
     distance_between = round(np.linalg.linalg.norm(v1 - v2), rounding_precision)  # CHECK THIS!
 
-    if not bom.has_key(distance_between):
+    if distance_between not in bom:
       bom[distance_between] = 0
     bom[distance_between] += 1
 
@@ -33,25 +33,25 @@ def get_bill_of_materials(V, C, rounding_precision):
   #
   keys = [x for x in sorted(bom.keys())]
   keys.reverse()
-  print
-  print 'Bill of Materials'
-  print
-  print '\tlength\tnumber'
+  print()
+  print('Bill of Materials')
+  print()
+  print('\tlength\tnumber')
   for k in keys:
-      print '\t' + str(k) + '\t' + str(bom[k])
-  print
-  print 'Small length chords could be artifacts, so check them with a DXF viewer before you build anything!'
-  print
+      print('\t' + str(k) + '\t' + str(bom[k]))
+  print()
+  print('Small length chords could be artifacts, so check them with a DXF viewer before you build anything!')
+  print()
 
   #
   # data structure to store hub information
   #
   hubs = {}
   for c in C:
-    if not hubs.has_key(c[0]):  hubs[c[0]] = {'connected_vertices': {}, 'vertex' : None}
+    if c[0] not in hubs:  hubs[c[0]] = {'connected_vertices': {}, 'vertex' : None}
     hubs[c[0]]['connected_vertices'][c[1]] = {'vertex' : V[c[1]-1]}
     hubs[c[0]]['vertex'] = V[c[0]-1]
-    if not hubs.has_key(c[1]):  hubs[c[1]] = {'connected_vertices' : {}, 'vertex' : None}
+    if c[1] not in hubs:  hubs[c[1]] = {'connected_vertices' : {}, 'vertex' : None}
     hubs[c[1]]['connected_vertices'][c[0]] = {'vertex' : V[c[0]-1]}
     hubs[c[1]]['vertex'] = V[c[1]-1]
 
@@ -71,17 +71,17 @@ def get_bill_of_materials(V, C, rounding_precision):
   #
   # display the tangential plane angles we just calculated
   #
-  print 'Angles at hub between outbound cords and tangential plane:'
-  print
-  print '\thub\tconnecting hub\tangle (degrees)'
+  print('Angles at hub between outbound cords and tangential plane:')
+  print()
+  print('\thub\tconnecting hub\tangle (degrees)')
   for h in hubs.keys():
-    print '\t' + str(h)
+    print('\t' + str(h))
     number_of_connected_vertices = len(hubs[h]['connected_vertices'])
     for c in hubs[h]['connected_vertices']:
       if number_of_connected_vertices == 1:
-        print '\t\t' + str(c) + '\t' + 'base hub of truncated sphere, no angle to report'
+        print('\t\t' + str(c) + '\t' + 'base hub of truncated sphere, no angle to report')
       else:
-        print '\t\t' + str(c) + '\t' + str(hubs[h]['connected_vertices'][c]['tangential_angle'])
+        print('\t\t' + str(c) + '\t' + str(hubs[h]['connected_vertices'][c]['tangential_angle']))
 
 
 
@@ -101,18 +101,18 @@ def get_bill_of_materials(V, C, rounding_precision):
   #
   # display spoke angles
   #
-  print
-  print 'Spoke angles:'
-  print
-  print '\thub\tconnecting hub\tangle (degrees)'
+  print()
+  print('Spoke angles:')
+  print()
+  print('\thub\tconnecting hub\tangle (degrees)')
   for hub in hubs.keys():
-    print '\t' + str(hub)
+    print('\t' + str(hub))
     spoke_list = sorted(hubs[hub]['connected_vertices'])
     vertex = hubs[hub]['vertex']
     point = hubs[hub]['connected_vertices'][spoke_list[0]]['point_of_tangential_plane_intersection']
     reference_vector = point - vertex
     
-    print '\t\t' + str(spoke_list[0]) + '\t0.0'
+    print('\t\t' + str(spoke_list[0]) + '\t0.0')
     
     for spoke in spoke_list[1:]:
       point = hubs[hub]['connected_vertices'][spoke]['point_of_tangential_plane_intersection']
@@ -131,7 +131,7 @@ def get_bill_of_materials(V, C, rounding_precision):
       direction = np.dot(C, vertex)
       if direction < 0.:  angle_in_degrees = -1 * angle_in_degrees
 
-      print '\t\t' + str(spoke) + '\t' +  str(angle_in_degrees)
+      print('\t\t' + str(spoke) + '\t' +  str(angle_in_degrees))
 
 
 

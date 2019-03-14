@@ -30,7 +30,7 @@ class SymmetryTriangle(object):
       for j in range(len(self.row_list[i])):
         if (i == r) and (j == c):
           return cnt
-	cnt = cnt + 1;
+        cnt = cnt + 1;
     return cnt
 
   def __init__(self, chord_frequency):
@@ -46,33 +46,33 @@ class SymmetryTriangle(object):
 
         if r + c != chord_frequency:
           the_start = self.convertRCNotationToVertexNumber(r, c)
-	  the_end = self.convertRCNotationToVertexNumber(r+1, c)
-	  self.chord_list.append([the_start, the_end])
+          the_end = self.convertRCNotationToVertexNumber(r+1, c)
+          self.chord_list.append([the_start, the_end])
 	
-	  the_start = self.convertRCNotationToVertexNumber(r, c)
-	  the_end = self.convertRCNotationToVertexNumber(r, c+1)
-	  self.chord_list.append([the_start, the_end])
+          the_start = self.convertRCNotationToVertexNumber(r, c)
+          the_end = self.convertRCNotationToVertexNumber(r, c+1)
+          self.chord_list.append([the_start, the_end])
 
-	if c != 0:
+        if c != 0:
           the_start = self.convertRCNotationToVertexNumber(r, c);
-	  the_end = self.convertRCNotationToVertexNumber(r+1, c-1);
-	  self.chord_list.append([the_start, the_end])
+          the_end = self.convertRCNotationToVertexNumber(r+1, c-1);
+          self.chord_list.append([the_start, the_end])
 
     # specify faces
     self.face_list = []
     for r in range(len(self.row_list)):
       for c in range(0, len(self.row_list[r]) - 1):
         the_first = self.convertRCNotationToVertexNumber(r, c)
-	the_second = self.convertRCNotationToVertexNumber(r, c+1)
-	the_third = self.convertRCNotationToVertexNumber(r+1, c)
-	self.face_list.append([the_first, the_second, the_third])
+        the_second = self.convertRCNotationToVertexNumber(r, c+1)
+        the_third = self.convertRCNotationToVertexNumber(r+1, c)
+        self.face_list.append([the_first, the_second, the_third])
 
-	if c != 0 and r + 1 != chord_frequency:
+        if c != 0 and r + 1 != chord_frequency:
 
           the_first = self.convertRCNotationToVertexNumber(r+1, c-1)
-	  the_second = self.convertRCNotationToVertexNumber(r, c)
-	  the_third = self.convertRCNotationToVertexNumber(r+1, c)
-	  self.face_list.append([the_first, the_second, the_third])
+          the_second = self.convertRCNotationToVertexNumber(r, c)
+          the_third = self.convertRCNotationToVertexNumber(r+1, c)
+          self.face_list.append([the_first, the_second, the_third])
 
 
 
@@ -87,9 +87,9 @@ class ClassOneMethodOneSymmetryTriangle(SymmetryTriangle):
       col_list = []
       for c in range(0, f - r + 1):
         x = ((CL / np.float64(f)) * np.float64(r) * np.cos(PI / 3.)) + (CL / np.float64(f)) * np.float64(c) - (CL / np.float64(2.));
-	y = (CL / np.float64(f)) * np.float64(r) * np.sin(PI / 3.) - ((CL / np.float64(3.)) * np.sin(PI / np.float64(3)));
-	col_list.append(Vertex(x, y, 0.))
-	self.vertices.append(Vertex(x, y, 0.))
+        y = (CL / np.float64(f)) * np.float64(r) * np.sin(PI / 3.) - ((CL / np.float64(3.)) * np.sin(PI / np.float64(3)));
+        col_list.append(Vertex(x, y, 0.))
+        self.vertices.append(Vertex(x, y, 0.))
       self.row_list.append(col_list)
 
     super(ClassOneMethodOneSymmetryTriangle, self).__init__(f)

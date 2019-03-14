@@ -26,7 +26,8 @@ import sys
 #
 # load pyDome modules
 #
-from Polyhedral import *
+from Polyhedral import Octahedron
+from Polyhedral import Icosahedron
 from SymmetryTriangle import *
 from GeodesicSphere import *
 from Output import *
@@ -35,29 +36,29 @@ from BillOfMaterials import *
 
 
 def display_help():
-  print
-  print 'pyDome:  A geodesic dome calculator. Copyright 2013 by Daniel Williams'
-  print
-  print 'Required Command-Line Input:'
-  print
-  print '\t-o, --output=\tPath to output file(s). Extensions will be added. Generates DXF and WRL files by default, but only WRL file when "-F" option is active. Example:  \"-o output/test\" produces files output/test.wrl and output/test.dxf.'
-  print
-  print 'Options:'
-  print
-  print '\t-r, --radius\tRadius of generated dome. Must be floating point. Default 1.0.'
-  print
-  print '\t-f, --frequency\tFrequency of generated dome. Must be an integer. Default 4.'
-  print
-  print '\t-v, --vthreshold\tDistance required to consider two vertices equal. Default 0.0000001. Must be floating point.'
-  print
-  print '\t-t, --truncation\tDistance (ratio) from the bottom to truncate. Default 0.499999. I advise using only the default or 0.333333. Must be floating point.'
-  print
-  print '\t-b, --bom-rounding\tThe number of decimal places to round chord length output in the generated Bill of Materials. Default 5. Must be an integer.'
-  print
-  print '\t-p, --polyhedron\tEither \"octahedron\" or \"icosahedron\". Default icosahedron.'
-  print
-  print '\t-F, --face\tFlag specifying whether to generate face output in WRL file. Cancels DXF file output and cannot be used with truncation.'
-  print
+  print()
+  print('pyDome:  A geodesic dome calculator. Copyright 2013 by Daniel Williams')
+  print()
+  print( 'Required Command-Line Input:')
+  print()
+  print( '\t-o, --output=\tPath to output file(s). Extensions will be added. Generates DXF and WRL files by default, but only WRL file when "-F" option is active. Example:  \"-o output/test\" produces files output/test.wrl and output/test.dxf.')
+  print()
+  print( 'Options:')
+  print()
+  print( '\t-r, --radius\tRadius of generated dome. Must be floating point. Default 1.0.')
+  print()
+  print( '\t-f, --frequency\tFrequency of generated dome. Must be an integer. Default 4.')
+  print()
+  print( '\t-v, --vthreshold\tDistance required to consider two vertices equal. Default 0.0000001. Must be floating point.')
+  print()
+  print( '\t-t, --truncation\tDistance (ratio) from the bottom to truncate. Default 0.499999. I advise using only the default or 0.333333. Must be floating point.')
+  print()
+  print( '\t-b, --bom-rounding\tThe number of decimal places to round chord length output in the generated Bill of Materials. Default 5. Must be an integer.')
+  print()
+  print( '\t-p, --polyhedron\tEither \"octahedron\" or \"icosahedron\". Default icosahedron.')
+  print()
+  print( '\t-F, --face\tFlag specifying whether to generate face output in WRL file. Cancels DXF file output and cannot be used with truncation.')
+  print()
 
 def main():
 
@@ -86,8 +87,8 @@ def main():
   #
   try:
     opts, args = getopt.getopt(sys.argv[1:], 'r:f:v:t:b:p:Fo:', ['truncation=', 'vthreshold=', 'radius=', 'frequency=', 'help', 'bom-rounding=', 'polyhedron=', 'face', 'output='])
-  except getopt.error, msg:
-    print "for help use --help"
+  except getopt.error:
+    print( "for help use --help")
     sys.exit(-1)
   for o, a in opts:
     if o in ('-o', '--output'):
@@ -99,7 +100,7 @@ def main():
       try:
         bom_rounding_precision = int(a)
       except:
-        print '-b or --bom-rounding argument must be an integer. Exiting.'
+        print( '-b or --bom-rounding argument must be an integer. Exiting.')
         sys.exit(-1)
     if o in ('-h', '--help'):
       display_help()
@@ -111,20 +112,20 @@ def main():
         a = float(a)
         radius = np.float64(a)
       except:
-        print '-r or --radius argument must be a floating point number. Exiting.'
+        print( '-r or --radius argument must be a floating point number. Exiting.')
         sys.exit(-1)
     if o in ('-f', '--frequency'):
       try:
         frequency = int(a)
       except:
-        print '-f or --frequency argument must be an integer. Exiting.'
+        print( '-f or --frequency argument must be an integer. Exiting.')
         sys.exit(-1)
     if o in ('-v', '--vthreshold'):
       try:
         a = float(a)
         vertex_equal_threshold = np.float64(a)
       except:
-        print '-v or --vthreshold argument must be a floating point number. Exiting.'
+        print( '-v or --vthreshold argument must be a floating point number. Exiting.')
         sys.exit(-1)
     if o in ('-t', '--truncation'):
       try:
@@ -132,21 +133,21 @@ def main():
         truncation_amount = np.float64(a)
         run_truncate = True
       except:
-        print '-t or --truncation argument must be a floating point number. Exiting.'
+        print( '-t or --truncation argument must be a floating point number. Exiting.')
         sys.exit(-1)
 
   #
   # check for required options
   #
   if output_path == None:
-    print 'An output path and filename is required. Use the -o argument. Exiting.'
+    print( 'An output path and filename is required. Use the -o argument. Exiting.')
     sys.exit(-1)
 
   #
   # check for mutually exclusive options
   #
   if face_output and run_truncate:
-    print 'Truncation does not work with face output at this time. Use either -t or -F but not both.'
+    print( 'Truncation does not work with face output at this time. Use either -t or -F but not both.')
     exit(-1)
 
   #
